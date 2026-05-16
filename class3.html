@@ -1,0 +1,125 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+        let arr=[1,2,3,4,5,5 ]
+
+        console.log(arr.length);
+        arr.push(6)
+
+        console.log(arr);
+        arr.pop(arr.length-1)
+
+        console.log(arr);
+        arr.unshift(0)
+
+        console.log(arr);
+        arr.shift()
+
+        console.log(arr);
+
+
+        //  console.log(arr.includes(5),"kyaa");
+        //  console.log(arr.indexOf(5),);
+
+
+
+
+        //  let data = arr.find(function(a){
+        //     return a==5
+        //  })
+        //  console.log(data);
+
+
+
+        let arr2 =arr.forEach((a,b,c)=>{
+            // console.log(c,'for each');
+                return b
+        })
+        console.log(arr2==arr,'for each data');
+
+
+
+           
+
+           let arr1 = arr.map((a,b,c)=>{
+            // console.log(a,'for each');
+            return a
+        })
+        console.log(arr1==arr,'map data');
+
+
+        
+        
+
+        let filterV = arr.filter((a,b,c)=>{
+            return a>2
+        })
+        console.log(filterV,'filtered data');
+
+
+        let sum = arr.reduce((a,b,c,d)=>{
+            console.log(a,'mai a hun');
+            console.log(b,'mai b hun');
+            console.log(c,'mai c hun');
+            console.log(d,'mai d hun');
+            return a+b
+        },10)
+        console.log(sum,'kya ayega');
+
+
+        arr=[1,2,3,5,53,6,3,6,3,345,2]
+
+        let greater = arr.filter((a)=>{
+            return a>2
+        })
+        console .log(greater,'greater than 2');
+
+
+
+        let even = arr.filter((a)=>{
+            return a%2==0
+        })
+        console.log(even,'even numbers');
+
+        let odd = arr.filter((a)=>{
+            return a%2!=0
+        })
+        console.log(odd,'odd numbers');
+
+
+
+
+        
+
+        // console.log(a);
+        // var a=5
+
+        // console.log(b);
+        // let b=10
+
+
+
+        // sum()
+        // let sum=()=> {
+        //     console.log("hello");
+        // }
+
+
+        // sume()
+        // let sume=()=>{
+        //     console.log("hello");
+        // }
+       
+        
+
+        
+        
+    </script>
+</body>
+</html>
