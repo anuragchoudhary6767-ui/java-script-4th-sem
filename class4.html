@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // ============================================================
+//  CLASS 3 — Arrays Deep Dive
+//  Topics: Array Methods | for | for...in | for...of |
+//          forEach | map | filter | reduce
+// ============================================================
+
+
+// ─────────────────────────────────────────────
+//  QUICK RECAP
+// ─────────────────────────────────────────────
+
+let fruits = ["apple", "banana", "mango", "kiwi", "grapes"];
+
+console.log(fruits[0]);      // "apple"
+console.log(fruits.length);  // 5
+
+
+// ─────────────────────────────────────────────
+//  1. ARRAY METHODS — ADD / REMOVE
+// ─────────────────────────────────────────────
+
+// ── push() — END mein add karo
+// Returns: new length
+let nums = [1, 2, 3];
+let newLen = nums.push(4, 5);
+console.log(nums);    // [1, 2, 3, 4, 5]
+console.log(newLen);  // 5
+
+// ── pop() — END se remove karo
+// Returns: removed element
+let last = nums.pop();
+console.log(last);  // 5
+console.log(nums);  // [1, 2, 3, 4]
+
+// ── unshift() — BEGINNING mein add karo
+// Returns: new length
+nums.unshift(0);
+console.log(nums); // [0, 1, 2, 3, 4]
+
+// ── shift() — BEGINNING se remove karo
+// Returns: removed element
+let first = nums.shift();
+console.log(first); // 0
+console.log(nums);  // [1, 2, 3, 4]
+
+/*
+  SUMMARY:
+  push()    → end mein ADD
+  pop()     → end se REMOVE
+  unshift() → beginning mein ADD
+  shift()   → beginning se REMOVE
+*/
+
+
+// ─────────────────────────────────────────────
+//  2. ARRAY METHODS — FIND / CHECK
+// ─────────────────────────────────────────────
+
+let colors = ["red", "green", "blue", "yellow"];
+
+// ── indexOf() — element ka index nikalo
+// Returns: index, ya -1 if not found
+console.log(colors.indexOf("green"));  // 1
+console.log(colors.indexOf("pink"));   // -1
+
+// ── includes() — element hai ya nahi
+// Returns: true / false
+console.log(colors.includes("blue"));  // true
+console.log(colors.includes("pink"));  // false
+
+// ── find() — condition match karne wala PEHLA element
+// Returns: element ya undefined
+let numbers = [5, 12, 8, 130, 44];
+let found = numbers.find(n => n > 10);
+console.log(found); // 12 (pehla element jo 10 se bada hai)
+
+// ── findIndex() — condition match karne wala pehla element ka INDEX
+let foundIdx = numbers.findIndex(n => n > 10);
+console.log(foundIdx); // 1
+
+
+// ─────────────────────────────────────────────
+//  3. ARRAY METHODS — MODIFY / EXTRACT
+// ─────────────────────────────────────────────
+
+// ── splice(start, deleteCount, ...items) — array ko modify karo IN PLACE
+// Returns: removed elements ka array
+
+let arr = [1, 2, 3, 4, 5];
+
+// Sirf delete karna
+let removed = arr.splice(1, 2); // index 1 se 2 elements hata do
+console.log(arr);     // [1, 4, 5]
+console.log(removed); // [2, 3]
+
+// Delete + Insert
+let arr2 = ["a", "b", "c", "d"];
+arr2.splice(1, 1, "X", "Y"); // index 1 pe 1 delete, "X" "Y" insert
+console.log(arr2); // ["a", "X", "Y", "c", "d"]
+
+// Sirf insert karna (delete 0)
+arr2.splice(2, 0, "Z");
+console.log(arr2); // ["a", "X", "Z", "Y", "c", "d"]
+
+// ── slice(start, end) — new array return karo (original change nahi hota)
+// end index EXCLUDE hota hai
+let letters = ["a", "b", "c", "d", "e"];
+let sliced = letters.slice(1, 4); // index 1 se 3 tak
+console.log(sliced);   // ["b", "c", "d"]
+console.log(letters);  // ["a", "b", "c", "d", "e"] — unchanged!
+
+// Negative index bhi use kar sakte ho
+console.log(letters.slice(-2));    // ["d", "e"] — last 2 elements
+console.log(letters.slice(1, -1)); // ["b", "c", "d"] — 1 se last-1 tak
+
+/*
+  splice vs slice yaad karne ka trick:
+  splice → "splic-e" = in-place change, original MUTATE karta hai
+  slice  → "slic-e"  = copy nikalta hai, original SAFE rehta hai
+*/
+
+
+// ─────────────────────────────────────────────
+//  4. ARRAY METHODS — COMBINE / CONVERT
+// ─────────────────────────────────────────────
+
+// ── concat() — do ya zyada arrays ko join karo
+// Returns: new array
+let a = [1, 2, 3];
+let b = [4, 5, 6];
+let c = [7, 8, 9];
+let combined = a.concat(b, c);
+console.log(combined); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+// Spread se bhi kar sakte ho (modern way)
+let combined2 = [...a, ...b, ...c];
+console.log(combined2); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+// ── join() — array ko string mein convert karo
+// Returns: string
+let words = ["Hello", "World", "JS"];
+console.log(words.join(" "));   // "Hello World JS"
+console.log(words.join("-"));   // "Hello-World-JS"
+console.log(words.join(""));    // "HelloWorldJS"
+console.log(words.join());      // "Hello,World,JS" (default comma)
+
+// ── flat() — nested array ko flatten karo
+let nested = [1, [2, 3], [4, [5, 6]]];
+console.log(nested.flat());    // [1, 2, 3, 4, [5, 6]] — 1 level
+console.log(nested.flat(2));   // [1, 2, 3, 4, 5, 6]   — 2 levels
+console.log(nested.flat(Infinity)); // [1, 2, 3, 4, 5, 6] — poora flatten
+
+
+// ─────────────────────────────────────────────
+//  5. ARRAY METHODS — SORT / REVERSE
+// ─────────────────────────────────────────────
+
+// ── sort() — array sort karo IN PLACE
+let animals = ["cat", "ant", "dog", "bat"];
+animals.sort();
+console.log(animals); // ["ant", "bat", "cat", "dog"] — alphabetical
+
+// ⚠️ Numbers ke liye direct sort() kaam nahi karta!
+let scores = [40, 100, 1, 5, 25];
+scores.sort();
+console.log(scores); // [1, 100, 25, 40, 5] ← WRONG! (string comparison)
+
+// Numbers ke liye comparator function chahiye
+scores.sort((a, b) => a - b);  // Ascending
+console.log(scores); // [1, 5, 25, 40, 100] ✅
+
+scores.sort((a, b) => b - a);  // Descending
+console.log(scores); // [100, 40, 25, 5, 1] ✅
+
+/*
+  Comparator rule:
+  (a, b) => a - b   → Ascending  (negative = a pehle, positive = b pehle)
+  (a, b) => b - a   → Descending
+*/
+
+// ── reverse() — array ulta karo IN PLACE
+let rev = [1, 2, 3, 4, 5];
+rev.reverse();
+console.log(rev); // [5, 4, 3, 2, 1]
+
+
+// ─────────────────────────────────────────────
+//  6. LOOPS
+// ─────────────────────────────────────────────
+
+let students = ["Ankit", "Priya", "Rahul", "Sneha"];
+
+// ── for loop — classic, index control chahiye toh
+for (let i = 0; i < students.length; i++) {
+  console.log(i, students[i]);
+}
+// 0 Ankit
+// 1 Priya
+// 2 Rahul
+// 3 Sneha
+
+// ── for...of — clean, directly element chahiye toh
+for (let student of students) {
+  console.log(student);
+}
+// Ankit
+// Priya
+// Rahul
+// Sneha
+
+// ── for...in — index milta hai (arrays ke liye avoid karo — objects ke liye better)
+for (let index in students) {
+  console.log(index, students[index]); // index string hota hai for...in mein!
+}
+
+/*
+  ⚠️ for...in WARNING:
+  for...in arrays ke saath technically kaam karta hai,
+  lekin index STRING form mein aata hai, aur agar array
+  pe extra properties add ki ho toh woh bhi iterate karta hai.
+  Arrays ke liye for...of ya forEach use karo.
+  for...in → OBJECTS ke liye best hai.
+*/
+
+let person = { name: "Ankit", age: 22, city: "Indore" };
+
+// for...in OBJECTS ke liye perfect hai
+for (let key in person) {
+  console.log(key, ":", person[key]);
+}
+// name : Ankit
+// age : 22
+// city : Indore
+
+
+// ─────────────────────────────────────────────
+//  7. forEach()
+// ─────────────────────────────────────────────
+
+/*
+  forEach(callback) — har element pe function chalao
+  Returns: NOTHING (undefined)
+  Original array: CHANGE NAHI HOTA
+  Use karo jab: sirf iterate karna ho, koi new array nahi chahiye
+*/
+
+let prices = [100, 200, 300, 400];
+
+prices.forEach(function(price, index, array) {
+  console.log(`Index ${index}: ₹${price}`);
+});
+// Index 0: ₹100
+// Index 1: ₹200
+// Index 2: ₹300
+// Index 3: ₹400
+
+// Arrow function ke saath (modern)
+prices.forEach((price, index) => {
+  console.log(index, price);
+});
+
+// Sirf element chahiye — index optional hai
+prices.forEach(price => console.log(price));
+
+// forEach se return karna kaam nahi karta!
+// forEach ALWAYS returns undefined — no new array
+
+
+// ─────────────────────────────────────────────
+//  8. map()
+// ─────────────────────────────────────────────
+
+/*
+  map(callback) — har element ko TRANSFORM karo
+  Returns: NEW array (same length)
+  Original array: CHANGE NAHI HOTA
+  Use karo jab: har element ko modify karke new array chahiye
+*/
+
+let nums2 = [1, 2, 3, 4, 5];
+
+// Har element double karo
+let doubled = nums2.map(n => n * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+console.log(nums2);   // [1, 2, 3, 4, 5] — original unchanged!
+
+// String array ko uppercase karo
+let names = ["ankit", "priya", "rahul"];
+let upperNames = names.map(name => name.toUpperCase());
+console.log(upperNames); // ["ANKIT", "PRIYA", "RAHUL"]
+
+// Object array se sirf ek field nikalo
+let users = [
+  { id: 1, name: "Ankit", age: 22 },
+  { id: 2, name: "Priya", age: 20 },
+  { id: 3, name: "Rahul", age: 25 }
+];
+
+let userNames = users.map(user => user.name);
+console.log(userNames); // ["Ankit", "Priya", "Rahul"]
+
+// Object transform karo
+let userCards = users.map(user => ({
+  id: user.id,
+  displayName: user.name.toUpperCase(),
+  isAdult: user.age >= 18
+}));
+console.log(userCards);
+// [
+//   { id: 1, displayName: "ANKIT", isAdult: true },
+//   { id: 2, displayName: "PRIYA", isAdult: true },
+//   { id: 3, displayName: "RAHUL", isAdult: true }
+// ]
+
+
+// ─────────────────────────────────────────────
+//  9. filter()
+// ─────────────────────────────────────────────
+
+/*
+  filter(callback) — condition pass karne wale elements rakho
+  Returns: NEW array (length kam ya same ho sakti hai)
+  Original array: CHANGE NAHI HOTA
+  Use karo jab: kuch elements ko condition ke basis pe chhanna ho
+  Callback: true return karo → element rakho, false → hata do
+*/
+
+let allNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Sirf even numbers
+let evens = allNums.filter(n => n % 2 === 0);
+console.log(evens); // [2, 4, 6, 8, 10]
+
+// Sirf odd numbers
+let odds = allNums.filter(n => n % 2 !== 0);
+console.log(odds); // [1, 3, 5, 7, 9]
+
+// 5 se bade numbers
+let greaterThan5 = allNums.filter(n => n > 5);
+console.log(greaterThan5); // [6, 7, 8, 9, 10]
+
+// Object array filter
+let products = [
+  { name: "Laptop",  price: 50000, inStock: true  },
+  { name: "Phone",   price: 20000, inStock: false  },
+  { name: "Tablet",  price: 30000, inStock: true   },
+  { name: "Watch",   price: 5000,  inStock: false  },
+  { name: "Monitor", price: 15000, inStock: true   }
+];
+
+// Sirf in-stock products
+let available = products.filter(p => p.inStock);
+console.log(available);
+// [Laptop, Tablet, Monitor]
+
+// 10000 se saste products jo in-stock bhi ho
+let affordable = products.filter(p => p.price < 20000 && p.inStock);
+console.log(affordable);
+// [Monitor, Watch] mein se sirf Monitor (Watch out of stock)
+
+
+// ─────────────────────────────────────────────
+//  10. reduce()
+// ─────────────────────────────────────────────
+
+/*
+  reduce(callback, initialValue) — array ko EK value mein reduce karo
+  Returns: single value (number, string, object — kuch bhi)
+  Original array: CHANGE NAHI HOTA
+
+  Callback ke 4 arguments:
+    accumulator → running total / result so far
+    currentValue → current element
+    currentIndex → (optional) current index
+    array → (optional) original array
+
+  initialValue → accumulator ki starting value
+  (ALWAYS initialValue do — safe practice)
+*/
+
+let nums3 = [1, 2, 3, 4, 5];
+
+// Sum
+let sum = nums3.reduce((acc, curr) => acc + curr, 0);
+console.log(sum); // 15
+
+/*
+  Step by step:
+  Start: acc = 0
+  i=0: acc = 0 + 1 = 1
+  i=1: acc = 1 + 2 = 3
+  i=2: acc = 3 + 3 = 6
+  i=3: acc = 6 + 4 = 10
+  i=4: acc = 10 + 5 = 15
+  Result: 15
+*/
+
+// Product (multiply all)
+let product = nums3.reduce((acc, curr) => acc * curr, 1);
+console.log(product); // 120 (1*2*3*4*5)
+
+// Maximum value nikalna
+let maxVal = nums3.reduce((acc, curr) => curr > acc ? curr : acc, nums3[0]);
+console.log(maxVal); // 5
+
+// Cart ka total price
+let cart = [
+  { item: "Shirt",  price: 500,  qty: 2 },
+  { item: "Jeans",  price: 1200, qty: 1 },
+  { item: "Shoes",  price: 2000, qty: 1 }
+];
+
+let totalBill = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+console.log(totalBill); // 500*2 + 1200*1 + 2000*1 = 4200
+
+// Count occurrences — elements ko count karo
+let langs = ["js", "py", "js", "java", "py", "js"];
+let count = langs.reduce((acc, lang) => {
+  acc[lang] = (acc[lang] || 0) + 1;
+  return acc;
+}, {});
+console.log(count); // { js: 3, py: 2, java: 1 }
+
+
+// ─────────────────────────────────────────────
+//  11. METHOD CHAINING — Ek ke baad ek
+// ─────────────────────────────────────────────
+
+/*
+  map, filter, reduce — teeno ko chain kar sakte ho
+  Ek ka result doosre ka input ban jaata hai
+*/
+
+let employees = [
+  { name: "Ankit",  dept: "Tech",    salary: 60000 },
+  { name: "Priya",  dept: "HR",      salary: 45000 },
+  { name: "Rahul",  dept: "Tech",    salary: 75000 },
+  { name: "Sneha",  dept: "Tech",    salary: 55000 },
+  { name: "Vikram", dept: "Finance", salary: 50000 }
+];
+
+// Tech department ke employees ki salaries ka total
+let techTotal = employees
+  .filter(emp => emp.dept === "Tech")     // Step 1: sirf Tech filter karo
+  .map(emp => emp.salary)                 // Step 2: sirf salary nikalo
+  .reduce((acc, sal) => acc + sal, 0);    // Step 3: total karo
+
+console.log(techTotal); // 60000 + 75000 + 55000 = 190000
+
+
+// ─────────────────────────────────────────────
+//  12. LOOPS vs ARRAY METHODS — Kab kya use karein
+// ─────────────────────────────────────────────
+
+/*
+  ┌─────────────────┬─────────────────────────────────────────────┐
+  │ Loop / Method   │ Kab use karein                              │
+  ├─────────────────┼─────────────────────────────────────────────┤
+  │ for             │ Index chahiye, break/continue use karna ho  │
+  │ for...of        │ Sirf elements chahiye, clean iteration      │
+  │ for...in        │ Object ke keys iterate karne ke liye        │
+  │ forEach()       │ Sirf iterate karna, no return needed        │
+  │ map()           │ Har element transform karna, new array      │
+  │ filter()        │ Condition se elements chhanna, new array    │
+  │ reduce()        │ Array ko single value mein convert karna    │
+  └─────────────────┴─────────────────────────────────────────────┘
+
+  forEach vs map:
+  → forEach: kuch print karna ho, side effect chahiye — return nahi
+  → map: new array chahiye transformed data ke saath
+
+  map vs filter:
+  → map: SAME length, har element transform hota hai
+  → filter: CHHOTI length, kuch elements hata dete hain
+*/
+
+
+// ─────────────────────────────────────────────
+//  QUICK SUMMARY
+// ─────────────────────────────────────────────
+/*
+  ✅ push / pop         → END pe add/remove
+  ✅ unshift / shift    → BEGINNING pe add/remove
+  ✅ indexOf / includes → element dhundho
+  ✅ find / findIndex   → condition se dhundho
+  ✅ splice             → in-place modify (delete + insert)
+  ✅ slice              → copy nikalo (original safe)
+  ✅ concat / flat      → arrays combine/flatten karo
+  ✅ join               → array → string
+  ✅ sort / reverse     → order change karo
+  ✅ for                → classic loop, index chahiye ho
+  ✅ for...of           → clean element iteration
+  ✅ for...in           → object keys ke liye
+  ✅ forEach()          → iterate karo, return nahi chahiye
+  ✅ map()              → transform karo → new array (same length)
+  ✅ filter()           → chhano → new array (shorter)
+  ✅ reduce()           → ek value mein compress karo
+  ✅ Chaining           → filter → map → reduce ek saath
+*/
+    </script>
+</body>
+</html>
